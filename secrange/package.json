@@ -1,0 +1,16 @@
+{
+  "name": "secrange",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Hands-on security certification training platform (MVP)",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm --workspace apps/api run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "migrate": "npm --workspace apps/api run migrate",
+    "seed": "npm --workspace apps/api run seed",
+    "test": "npm --workspace apps/api run test"
+  },
+  "devDependencies": { "concurrently": "^9.1.0" }
+}

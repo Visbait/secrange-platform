@@ -1,0 +1,42 @@
+# Full local stack: Postgres + API + Web. `docker compose up --build`
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: secrange
+      POSTGRES_PASSWORD: secrange
+      POSTGRES_DB: secrange
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U secrange"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ../apps/api
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgres://secrange:secrange@db:5432/secrange
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-dev-access-change-me}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-dev-refresh-change-me}
+      WEB_ORIGIN: http://localhost:8080
+      COOKIE_DOMAIN: localhost
+      COOKIE_SECURE: "false"
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+    depends_on:
+      db: { condition: service_healthy }
+    ports: ["4000:4000"]
+    # Run migrations + seed on boot, then start the server
+    command: sh -c "node src/db/migrate.js && node src/db/seed.js && node src/server.js"
+
+  web:
+    build: ../apps/web
+    depends_on: [api]
+    ports: ["8080:80"]
+
+volumes:
+  pgdata:
