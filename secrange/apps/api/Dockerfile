@@ -4,6 +4,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY package.json package-lock.json* ./
 RUN npm install --omit=dev || npm install --omit=dev --no-package-lock
+RUN chown -R node:node /app
 COPY src ./src
 COPY migrations ./migrations
 EXPOSE 4000
