@@ -18,7 +18,7 @@ progress.get('/dashboard', requireAuth, async (req, res, next) => {
        JOIN courses c ON c.id=e.course_id
        LEFT JOIN modules m ON m.course_id=c.id
        LEFT JOIN module_progress mp ON mp.module_id=m.id AND mp.user_id=$1
-       WHERE e.user_id=$1
+       WHERE e.user_id=$1 AND e.status='active'
        GROUP BY c.id ORDER BY c.title`, [req.user.id]);
     const { rows: stats } = await query('SELECT xp, level, best_streak, labs_done FROM learner_stats WHERE user_id=$1', [req.user.id]);
     res.json({
@@ -41,7 +41,7 @@ progress.post('/progress',
       const mod = rows[0];
       if (!mod) throw NotFound('Module not found');
       if (!mod.is_free) {
-        const ent = await query('SELECT 1 FROM entitlements WHERE user_id=$1 AND course_id=$2', [req.user.id, mod.course_id]);
+        const ent = await query("SELECT 1 FROM entitlements WHERE user_id=$1 AND course_id=$2 AND status='active'", [req.user.id, mod.course_id]);
         if (!ent.rowCount) throw Forbidden('No access to this course');
       }
       await query(

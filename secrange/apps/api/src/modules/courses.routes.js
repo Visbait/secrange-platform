@@ -33,7 +33,7 @@ courses.get('/:slug', maybeAuth, async (req, res, next) => {
 
     let hasAccess = course.is_free, progress = {};
     if (req.user) {
-      const ent = await query('SELECT 1 FROM entitlements WHERE user_id=$1 AND course_id=$2',
+      const ent = await query("SELECT 1 FROM entitlements WHERE user_id=$1 AND course_id=$2 AND status='active'",
         [req.user.id, course.id]);
       hasAccess = hasAccess || ent.rowCount > 0;
       const pr = await query(

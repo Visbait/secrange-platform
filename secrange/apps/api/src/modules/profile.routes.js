@@ -26,7 +26,7 @@ profile.get('/profile', requireAuth, async (req, res, next) => {
        JOIN courses c ON c.id = e.course_id
        LEFT JOIN modules m ON m.course_id = c.id
        LEFT JOIN module_progress mp ON mp.module_id = m.id AND mp.user_id = $1
-       WHERE e.user_id = $1
+       WHERE e.user_id = $1 AND e.status = 'active'
        GROUP BY c.id, e.source, e.granted_at
        ORDER BY e.granted_at DESC`, [uid])).rows
       .map(c => ({ ...c, percent: c.modules ? Math.round(c.done / c.modules * 100) : 0 }));
