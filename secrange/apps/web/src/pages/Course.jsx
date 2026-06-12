@@ -36,11 +36,11 @@ export default function Course() {
       {!hasAccess ? (
         <div className="lock">
           <div style={{fontSize:32,marginBottom:8}}>🔒</div>
-          <h3>Premium course — ${(course.priceCents/100).toFixed(2)}</h3>
+          <h3>Premium course — ${(course.priceCents/100).toFixed(2)}/month</h3>
           <p style={{color:'var(--muted)',margin:'8px 0 16px'}}>{modules.length} interactive modules with hands-on labs.</p>
           {user
-            ? <button className="btn" onClick={checkout} disabled={busy}>{busy?'Redirecting…':'Buy & unlock'}</button>
-            : <a className="btn" href="/login">Sign in to purchase</a>}
+            ? <button className="btn" onClick={checkout} disabled={busy}>{busy?'Redirecting…':'Subscribe & unlock'}</button>
+            : <a className="btn" href="/login">Sign in to subscribe</a>}
         </div>
       ) : (
         <>

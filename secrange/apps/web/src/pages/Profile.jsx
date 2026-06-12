@@ -56,10 +56,10 @@ export default function Profile() {
       <div className="section-title">Subscription &amp; billing</div>
       <div className="card" style={{ marginBottom: 8 }}>
         <div className="billrow">
-          <span>Courses you own</span><b>{billing.activeEntitlements}</b>
+          <span>Active course subscriptions</span><b>{billing.activeEntitlements}</b>
         </div>
         <div className="billrow">
-          <span>Purchased</span><b>{billing.purchasedCourses}</b>
+          <span>Subscribed</span><b>{billing.purchasedCourses}</b>
         </div>
         <div className="billrow">
           <span>Free / included</span><b>{billing.freeCourses}</b>
@@ -67,7 +67,7 @@ export default function Profile() {
         <div style={{ marginTop: 14 }}>
           {billing.hasStripeCustomer
             ? <button className="btn ghost" onClick={openBilling} disabled={billingBusy}>
-                {billingBusy ? 'Opening…' : 'Manage billing & receipts'}
+                {billingBusy ? 'Opening…' : 'Manage subscriptions & billing'}
               </button>
             : <Link className="btn ghost" to="/catalog">Browse premium courses →</Link>}
         </div>

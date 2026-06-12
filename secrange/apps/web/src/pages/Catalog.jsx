@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api.js';
 
-const CATS = [['all','All'],['entry','Entry'],['blue','Blue / SOC'],['cloud','Cloud'],['red','Red Team']];
+const CATS = [['all','All'],['entry','Entry'],['blue','Blue / SOC'],['cloud','Cloud'],['red','Red Team'],['forensics','Forensics & IR'],['grc','GRC / Leadership']];
 
 export default function Catalog() {
   const [courses, setCourses] = useState([]); const [cat, setCat] = useState('all');
